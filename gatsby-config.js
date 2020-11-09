@@ -13,6 +13,30 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: "gatsby-plugin-tinacms",
+      options: {
+        enabled: process.env.NODE_ENV !== 'production',
+        sidebar: {
+          position: "displace",
+        },
+        plugins: [
+          {
+            resolve: `gatsby-tinacms-git`,
+            options: {
+              // pathToRepo: REPO_PATH,
+              pathToContent: '/',
+              defaultCommitMessage: 'Edited with a blase attitude',
+              defaultCommitName: 'TinaTurnerCMS',
+              defaultCommitEmail: 'j.gaddas@outlook.com',
+              pushOnCommit: false,
+              sshKey: process.env.SSH_KEY,
+            }
+          }, 
+          "gatsby-tinacms-remark"
+        ]
+      },
+    },
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         path: `${__dirname}/content/blog`,

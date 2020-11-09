@@ -1,14 +1,39 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
+import {useForm, usePlugin} from 'tinacms'
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const BlogPostTemplate = ({ data, location }) => {
-  const post = data.markdownRemark
+  // const post = data.markdownRemark
   const siteTitle = data.site.siteMetadata?.title || `Title`
   const { previous, next } = data
+
+  const formConfig = {
+    id: data.markdownRemark.id,
+    label: "Blog post",
+    initialValues: data.markdownRemark,
+    onSubmit: (values) => {
+      alert(`Submitting ${values.frontmatter.title}`)
+    },
+    fields: [
+      {
+        name: 'frontmatter.title',
+        label: "Title",
+        component: "text",
+      },
+      {
+        name: 'frontmatter.descriptions',
+        label: "Description",
+        component: "textarea",
+      },
+    ]
+  }
+
+  const [post, form] = useForm(formConfig)
+  usePlugin(form)
 
   return (
     <Layout location={location} title={siteTitle}>
